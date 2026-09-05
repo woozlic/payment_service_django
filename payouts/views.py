@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.db import transaction
 
 from django.shortcuts import render
 from rest_framework import viewsets, status
@@ -7,6 +8,7 @@ from rest_framework.response import Response
 
 from .models import Payout
 from .serializers import PayoutSerializer, PayoutCreateSerializer
+from .tasks import process_payout
 
 
 class PayoutViewSet(viewsets.ModelViewSet):
@@ -19,7 +21,8 @@ class PayoutViewSet(viewsets.ModelViewSet):
         return Payout.objects.filter(is_deleted=False)
 
     def perform_create(self, serializer):
-        serializer.save()
+        payout = serializer.save()
+        transaction.on_commit(lambda: process_payout.delay(payout.id))
 
     def perform_update(self, serializer):
         if serializer.instance.status != Payout.Status.PENDING:

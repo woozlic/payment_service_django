@@ -12,3 +12,6 @@ db.sqlite3-journal
 /staticfiles/
 /static_root/
 .idea/
+celerybeat-schedule.bak
+celerybeat-schedule.dat
+celerybeat-schedule.dir
