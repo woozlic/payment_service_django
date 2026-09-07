@@ -74,6 +74,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
+REDIS_URL = env.str("REDIS_URL")
+
+CELERY_BROKER_URL = f"{REDIS_URL}/0"
+CELERY_RESULT_BACKEND = f"{REDIS_URL}/2"
+
+
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 

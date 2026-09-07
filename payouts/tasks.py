@@ -31,7 +31,6 @@ def process_payout(self, id) -> str:
 
 @shared_task
 def process_pending_payouts(limit: int = 100) -> int:
-    from .models import Payout
 
     ids = list(
         Payout.objects
