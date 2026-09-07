@@ -1,0 +1,12 @@
+[
+  {"model": "payouts.currency", "pk": 1, "fields": {"name": "USD"}},
+  {"model": "payouts.currency", "pk": 2, "fields": {"name": "EUR"}},
+  {"model": "payouts.currency", "pk": 3, "fields": {"name": "GBP"}},
+  {"model": "payouts.currency", "pk": 4, "fields": {"name": "CHF"}},
+  {"model": "payouts.currency", "pk": 5, "fields": {"name": "RUB"}},
+  {"model": "payouts.currency", "pk": 6, "fields": {"name": "KZT"}},
+  {"model": "payouts.currency", "pk": 7, "fields": {"name": "TRY"}},
+  {"model": "payouts.currency", "pk": 8, "fields": {"name": "AED"}},
+  {"model": "payouts.currency", "pk": 9, "fields": {"name": "CNY"}},
+  {"model": "payouts.currency", "pk": 10, "fields": {"name": "USDT"}}
+]

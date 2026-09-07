@@ -5,7 +5,7 @@ from decimal import Decimal
 
 
 class Currency(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self) -> str:
         return self.name
@@ -23,7 +23,7 @@ class Payout(models.Model):
         on_delete=models.PROTECT,
         related_name="payouts",
     )
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
+    currency = models.ForeignKey(Currency, on_delete=models.PROTECT)
     receiver_wallet = models.CharField(max_length=255)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
