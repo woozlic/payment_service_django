@@ -18,6 +18,11 @@ class Payout(models.Model):
 
     id = models.BigAutoField(primary_key=True)
     amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="payouts",
+    )
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
     receiver_wallet = models.CharField(max_length=255)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.PENDING)

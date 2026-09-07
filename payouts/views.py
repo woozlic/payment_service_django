@@ -5,6 +5,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Payout
 from .serializers import PayoutSerializer, PayoutCreateSerializer
@@ -12,6 +13,7 @@ from .tasks import process_payout
 
 
 class PayoutViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     serializer_class = PayoutSerializer
 
     def get_serializer_class(self):
@@ -21,7 +23,7 @@ class PayoutViewSet(viewsets.ModelViewSet):
         return Payout.objects.filter(is_deleted=False)
 
     def perform_create(self, serializer):
-        payout = serializer.save()
+        payout = serializer.save(user=self.request.user)
         transaction.on_commit(lambda: process_payout.delay(payout.id))
 
     def perform_update(self, serializer):
