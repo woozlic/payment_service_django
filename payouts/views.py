@@ -21,7 +21,7 @@ class PayoutViewSet(viewsets.ModelViewSet):
         return PayoutCreateSerializer if self.action == 'create' else PayoutSerializer
 
     def get_queryset(self):
-        return Payout.objects.filter(user=self.request.user, is_deleted=False)
+        return (Payout.objects.filter(user=self.request.user, is_deleted=False).select_related('currency'))
 
     def perform_create(self, serializer):
         payout = serializer.save(user=self.request.user)
