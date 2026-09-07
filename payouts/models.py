@@ -1,5 +1,8 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.conf import settings
+from decimal import Decimal
+
 
 class Currency(models.Model):
     name = models.CharField(max_length=100)
@@ -14,7 +17,7 @@ class Payout(models.Model):
         FAILED = "failed", "Failed"
 
     id = models.BigAutoField(primary_key=True)
-    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
     receiver_wallet = models.CharField(max_length=255)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.PENDING)
@@ -26,3 +29,7 @@ class Payout(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+        constraints = [
+            models.CheckConstraint(condition=models.Q(amount__gt=0), name="amount_positive"),
+        ]
